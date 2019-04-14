@@ -1,0 +1,9 @@
+[package]
+name = "client"
+version = "0.1.0"
+authors = ["PSTL"]
+edition = "2018"
+
+[dependencies]
+rand = "0.6.5"
+time = "0.1"
