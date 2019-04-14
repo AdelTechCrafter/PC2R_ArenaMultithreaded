@@ -7,7 +7,7 @@ fn main() {
     let mut vec_thread = Vec::new();
 
     //Send 100 requests at the same time
-    for _i in 0..10 {
+    for i in 0..10 {
         let handle = thread::spawn(move || {
             let mut stream = TcpStream::connect("127.0.0.1:7870").unwrap();
 
@@ -17,8 +17,11 @@ fn main() {
             //write
             //println!("Sending  {}", u64::from_be_bytes(r));
 			//stream.write(&r).unwrap();
-			stream.write("CONNECT/toto".as_bytes());
-			println!("CONNECT/toto");
+			//let req=concat!("CONNECT/","user",i,"/");
+
+			let req = format!("{}{}{}{}", "CONNECT/","user",i,"/");
+			stream.write(req.as_bytes()).unwrap();
+			println!("{}", req);
            
 
             //read
@@ -27,7 +30,7 @@ fn main() {
 
 
 			let received=String::from_utf8_lossy(&buffer[..]);
-			println!("Request: {}",received );
+			println!("Received: {}",received );
 
             // Check that we are getting back the same data
             //assert!(buffer == r);
