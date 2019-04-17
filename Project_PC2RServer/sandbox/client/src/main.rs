@@ -1,27 +1,23 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 use std::thread;
-//use rand::Rng;
-
+use std::env;
 fn main() {
     let mut vec_thread = Vec::new();
+	
 
-    //Send 100 requests at the same time
-    for i in 0..10 {
-        let handle = thread::spawn(move || {
-            let mut stream = TcpStream::connect("127.0.0.1:7870").unwrap();
+	let handle = thread::spawn(move || {
+			let args: Vec<String> = env::args().collect();
+			let nom=&args[1];
 
-            //let mut rng = rand::thread_rng();
-            //let r: [u8; 8] = rng.gen();
+            let mut stream = TcpStream::connect("127.0.0.1:7878").unwrap();
+		   //let req = format!("{}{}{}", "CONNECT/",nom,"/");
 			
-            //write
-            //println!("Sending  {}", u64::from_be_bytes(r));
-			//stream.write(&r).unwrap();
-			//let req=concat!("CONNECT/","user",i,"/");
+			let req = format!("{}{}{}", "EXIT/",nom,"/");
 
-			let req = format!("{}{}{}{}", "CONNECT/","user",i,"/");
+		
 			stream.write(req.as_bytes()).unwrap();
-			println!("{}", req);
+			println!("Request from user {} : {}",nom,req);
            
 
             //read
@@ -32,13 +28,14 @@ fn main() {
 			let received=String::from_utf8_lossy(&buffer[..]);
 			println!("Received: {}",received );
 
-            // Check that we are getting back the same data
-            //assert!(buffer == r);
-        });
-        vec_thread.push(handle);
-    }
+    });
+
+    vec_thread.push(handle);
+    
 
     for t in vec_thread {
         t.join().unwrap();
     }
 }
+
+
