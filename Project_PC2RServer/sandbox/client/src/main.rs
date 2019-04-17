@@ -11,9 +11,9 @@ fn main() {
 			let nom=&args[1];
 
             let mut stream = TcpStream::connect("127.0.0.1:7878").unwrap();
-		   //let req = format!("{}{}{}", "CONNECT/",nom,"/");
+		   let req = format!("{}{}{}", "CONNECT/",nom,"/");
 			
-			let req = format!("{}{}{}", "EXIT/",nom,"/");
+			//let req = format!("{}{}{}", "EXIT/",nom,"/");
 
 		
 			stream.write(req.as_bytes()).unwrap();
