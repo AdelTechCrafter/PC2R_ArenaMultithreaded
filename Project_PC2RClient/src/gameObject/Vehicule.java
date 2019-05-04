@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Vehicule extends GameObject{
-	
+		
 	protected double direction;
 	protected Point speed;
 	
@@ -16,6 +16,9 @@ public class Vehicule extends GameObject{
 	private double thrustit = 0.4;
 	private int score = 0;
 	private String id;
+	//private ImageView img;
+	protected int nb_thrust = 0;
+	protected double last_rotation;
 	
 	
 	public Vehicule(Node view, String id) {
@@ -24,22 +27,35 @@ public class Vehicule extends GameObject{
 		this.coord = new Point(Arena.SIZE/2, Arena.SIZE/2);
 		this.direction = 0;
 		this.speed = new Point(0, 0);
+		//img = new ImageView(new Image("1.png"));
+		//img.setX(coord.x);
+		//img.setY(coord.y);
 	}
 
 	public void clock() {
 		direction = direction-turnit;
+		last_rotation = last_rotation-turnit;
 		view.setRotate(direction);
+		//img.setRotate(direction);
 	}
 	
 	public void antiClock() {
 		direction = direction+turnit;
+		last_rotation = last_rotation+turnit;
 		view.setRotate(direction);
+		//img.setRotate(direction);
 	}
 	
 	public void thrust() {
 		speed.x = speed.getX() + thrustit*Math.cos(Math.toRadians(direction));
 		speed.y = speed.getY() + thrustit*Math.sin(Math.toRadians(direction));
+		nb_thrust++;
 	}
+	public void anti_thrust() {
+        speed.x = speed.getX() - thrustit*Math.cos(Math.toRadians(direction));
+        speed.y = speed.getY() - thrustit*Math.sin(Math.toRadians(direction));
+        nb_thrust--;
+    }
 		
 	public void update() {
 		if(coord.x <0) {
@@ -48,11 +64,13 @@ public class Vehicule extends GameObject{
 		if(coord.y <0){
 			coord.y = Arena.SIZE-coord.y;
 		}
+		speed.x = speed.x;
+		speed.y = speed.y;
 		coord.x = (coord.x + speed.getX())%Arena.SIZE;
 		coord.y = (coord.y + speed.getY())%Arena.SIZE; 
 		
 		view.setTranslateX(coord.x);
-		view.setTranslateY(coord.y);
+		view.setTranslateY(coord.y);		
 	}
 
 
