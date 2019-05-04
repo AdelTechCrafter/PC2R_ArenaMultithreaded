@@ -7,13 +7,16 @@ fn main() {
 	
 
 	let handle = thread::spawn(move || {
+			
 			let args: Vec<String> = env::args().collect();
 			let nom=&args[1];
 
             let mut stream = TcpStream::connect("127.0.0.1:7878").unwrap();
-		   let req = format!("{}{}{}", "CONNECT/",nom,"/");
+		   //let req = format!("{}{}{}", "CONNECT/",nom,"/");
 			
 			//let req = format!("{}{}{}", "EXIT/",nom,"/");
+			let coord=format!("{}:X{:.6}Y{:.6}",nom,String::from("400"),String::from("400"));
+			let req = format!("{}{}{}", "NEWPOS/",coord,"/");
 
 		
 			stream.write(req.as_bytes()).unwrap();
@@ -21,12 +24,22 @@ fn main() {
            
 
             //read
-            let mut buffer = [0; 128];
-            stream.read(&mut buffer).unwrap();
-
-
+			let mut buffer = [0; 512];
+			stream.read(&mut buffer).unwrap();
 			let received=String::from_utf8_lossy(&buffer[..]);
 			println!("Received: {}",received );
+			
+			let mut buffer2 = [0; 512];
+			stream.read(&mut buffer2).unwrap();
+			let received2=String::from_utf8_lossy(&buffer2[..]);
+			println!("Received2: {}",received2 );
+			
+			/*
+			let mut buffer3 = [0; 128];
+			stream.read(&mut buffer3).unwrap();
+			let received3=String::from_utf8_lossy(&buffer3[..]);
+			println!("Received3: {}",received2 );
+			*/
 
     });
 
