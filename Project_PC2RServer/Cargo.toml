@@ -1,9 +1,11 @@
 [package]
-name = "Project_PC2RServer"
+name = "web_server"
 version = "0.1.0"
-authors = ["El Amraoui Adel <Elamraoui.Adel@hotmail.com>"]
+authors = ["PSTL"]
 edition = "2018"
 
 [dependencies]
 rand = "0.6.5"
-time = "0.1"
+timer = "0.2.0"
+chrono = "0.4.6"
+num_cpus = "0.2"
